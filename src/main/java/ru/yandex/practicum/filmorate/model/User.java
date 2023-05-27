@@ -15,8 +15,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class User {
     private long id;
-    private @NotNull @NotEmpty @Email String email;
-    private @NotNull @NotEmpty String login;
+    private @NotNull
+    @NotEmpty
+    @Email String email;
+    private @NotNull
+    @NotEmpty String login;
     private String name;
     @Past
     private LocalDate birthday;
