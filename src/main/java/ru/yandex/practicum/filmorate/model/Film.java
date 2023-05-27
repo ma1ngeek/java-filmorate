@@ -15,7 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Film {
     private long id;
-    private @NotNull @NotEmpty String name;
+    private @NotNull
+    @NotEmpty String name;
     @Size(min = 1, max = 200, message = "Описание фильма не должно превышать 200 символов.")
     private String description;
     private @NotNull LocalDate releaseDate;
