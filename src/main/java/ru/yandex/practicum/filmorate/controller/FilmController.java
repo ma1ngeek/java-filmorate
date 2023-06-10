@@ -1,61 +1,67 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.TreeMap;
 
 @RestController
 @RequestMapping("films")
 @Slf4j
 public class FilmController {
 
-    private static long counter = 1;
-    private TreeMap<Long, Film> films = new TreeMap<>();
+    @Autowired
+    private FilmService service;
 
     @GetMapping
     public List<Film> getFilms() {
-        return List.copyOf(films.values());
+        log.info("GET /films/");
+        return service.getAll();
     }
 
     @PostMapping
     public Film addFilm(@RequestBody @Valid @NotNull Film film) {
+        log.info("POST /films/ " + film);
         validate(film);
-        film.setId(counter++);
-        films.put(film.getId(), film);
-        log.info("film created: {}", film);
-
-        return film;
+        return service.insert(film);
     }
 
     @PutMapping
     public Film updateFilm(@RequestBody @Valid @NotNull Film film) {
+        log.info("PUT /films/ " + film);
         validate(film);
-        if (!films.containsKey(film.getId())) {
-            throw new NotFoundException("Фильм #" + film.getId() + " не найден");
-        }
-        films.put(film.getId(), film);
-        log.info("film updated: {}", film);
-
-        if (counter <= film.getId()) {
-            counter = film.getId() + 1;
-        }
-        return film;
+        return service.update(film);
     }
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable long id) {
-        if (!films.containsKey(id)) {
-            throw new NotFoundException("Фильм #" + id + " не найден");
-        }
-        return films.get(id);
+        log.info("GET /films/{}", id);
+        return service.getById(id);
+    }
+
+    @PutMapping("/{filmId}/like/{userId}")
+    public void addLike(@PathVariable int filmId, @PathVariable int userId) {
+        log.info("PUT /films/{}/like/{}", filmId, userId);
+        service.addLike(filmId, userId);
+    }
+
+    @DeleteMapping("/{filmId}/like/{userId}")
+    public void remLike(@PathVariable int filmId, @PathVariable int userId) {
+        log.info("DELETE /films/{}/like/{}", filmId, userId);
+        service.remLike(filmId, userId);
+    }
+
+    @GetMapping(value = "/popular")
+    public List<Film> getPopular(@RequestParam(defaultValue = "10") int count) {
+        log.info("GET /films/popular?count={}", count);
+        return service.top(count);
     }
 
     private final LocalDate minDate = LocalDate.of(1895, 12, 28);

@@ -29,7 +29,13 @@ class UserControllerTest {
     @Test
     public void validate() {
         LocalDate birthday = LocalDate.of(2000, 6, 1);
-        User user = new User(1, "login@gmail.com", "login", "name", birthday);
+        User user = User.builder()
+                .id(1)
+                .email("login@gmail.com")
+                .login("login")
+                .name("name")
+                .birthday(birthday)
+                .build();
 
         // all correct
         assertDoesNotThrow(() -> check(user));

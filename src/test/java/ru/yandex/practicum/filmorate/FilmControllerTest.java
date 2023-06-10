@@ -29,7 +29,13 @@ class FilmControllerTest {
 
     @Test
     public void validate() {
-        Film film = new Film(1, "name", "description", LocalDate.of(2020, 6, 1), 90);
+        Film film = Film.builder()
+                .id(1)
+                .name("name")
+                .description("description")
+                .releaseDate(LocalDate.of(2020, 6, 1))
+                .duration(90)
+                .build();
 
         // all correct
         assertDoesNotThrow(() -> check(film));
