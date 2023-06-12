@@ -1,9 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,15 +19,17 @@ import java.util.TreeSet;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
-    private long id;
-    private @NotNull
+    long id;
+    @NotNull
     @NotEmpty String name;
     @Size(min = 1, max = 200, message = "Описание фильма не должно превышать 200 символов.")
-    private String description;
-    private @NotNull LocalDate releaseDate;
+    String description;
+    @NotNull LocalDate releaseDate;
     @Positive(message = "Продолжительность не может быть отрицательной")
-    private int duration;
-    private Set<Long> likes = new TreeSet<>();
+    int duration;
+    @Builder.Default
+    Set<Long> likes = new TreeSet<>();
 }
 

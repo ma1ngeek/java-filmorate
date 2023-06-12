@@ -69,6 +69,5 @@ class FilmControllerTest {
         film.setDuration(-1);
         assertThrows(ValidationException.class, () -> check(film));
         film.setDuration(90);
-
     }
 }
