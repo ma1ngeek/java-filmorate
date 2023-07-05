@@ -73,6 +73,7 @@ class FilmServiceTest {
         User user = User.builder()
                 .login("login")
                 .email("mail@email.com")
+                .birthday(LocalDate.now())
                 .build();
         userService.insert(user);
 
