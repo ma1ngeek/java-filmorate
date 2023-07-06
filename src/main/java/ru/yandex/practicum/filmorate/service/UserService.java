@@ -45,15 +45,15 @@ public class UserService {
     public void addFriend(long userId, long friendId) {
         User user = getById(userId);
         User friend = getById(friendId);
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        storage.addFriend(userId, friendId);
+        log.info("Новый друг добавлен");
     }
 
     public void remFriend(long userId, long friendId) {
         User user = getById(userId);
         User friend = getById(friendId);
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
+        storage.deleteFriend(userId, friendId);
+        log.info("Друг удален");
     }
 
     public List<User> commonFriends(long userId, long friendId) {

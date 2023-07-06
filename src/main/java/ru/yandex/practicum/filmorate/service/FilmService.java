@@ -42,13 +42,15 @@ public class FilmService {
     public void addLike(long filmId, long userId) {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
-        film.getLikes().add(userId);
+        storage.addLike(filmId, userId);
+        log.info("Лайк добавлен");
     }
 
     public void remLike(long filmId, long userId) {
         Film film = getById(filmId);
         User user = userStorage.getById(userId);
-        film.getLikes().remove(userId);
+        storage.removeLike(filmId, userId);
+        log.info("Лайк удален");
     }
 
     public List<Film> top(int count) {
