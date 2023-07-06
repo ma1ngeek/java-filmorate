@@ -1,6 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 
+https://github.com/ma1ngeek/java-filmorate/blob/main/db_scheme.png
 
 #### Таблицы с Данными
 - **USERS** список пользователей
